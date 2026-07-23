@@ -1,0 +1,229 @@
+.hero{
+
+    width:90%;
+    margin:auto;
+
+    min-height:85vh;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.hero-text{
+
+    width:50%;
+
+}
+
+.hero-text p:first-child{
+
+    color:#999;
+    margin-bottom:15px;
+
+}
+
+.hero-text h1{
+
+    font-size:60px;
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+.hero-text h2{
+
+    margin:15px 0;
+
+    color:var(--blue);
+
+    font-weight:500;
+
+}
+
+.description{
+
+    color:var(--grey);
+
+    max-width:500px;
+
+    line-height:1.8;
+
+    margin-bottom:40px;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    gap:20px;
+
+}
+
+.hero-image{
+
+    width:40%;
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.hero-image img{
+
+    width:100%;
+    max-width:450px;
+
+    position:relative;
+    z-index:2;
+
+}
+
+/* Glow */
+
+.glow{
+
+    position:absolute;
+
+    width:400px;
+    height:400px;
+
+    background:#2563EB;
+
+    filter:blur(160px);
+
+    opacity:.25;
+
+    border-radius:50%;
+
+    top:80px;
+
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+.hero{
+
+flex-direction:column-reverse;
+text-align:center;
+padding:50px 0;
+
+}
+
+.hero-text{
+
+width:100%;
+
+}
+
+.hero-image{
+
+width:100%;
+margin-bottom:40px;
+
+}
+
+.buttons{
+
+justify-content:center;
+
+}
+
+.hero-text h1{
+
+font-size:42px;
+
+}
+
+}
+.featured-projects{
+
+    width:90%;
+    margin:80px auto;
+
+}
+
+.featured-projects h2{
+
+    text-align:center;
+    margin-bottom:40px;
+    font-size:2rem;
+
+}
+
+.project-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+
+}
+
+.project-card{
+
+    background:#171717;
+    border:1px solid #222;
+    border-radius:12px;
+    padding:30px;
+    transition:.3s;
+
+}
+
+.project-card:hover{
+
+    transform:translateY(-5px);
+    border-color:#2563EB;
+
+}
+
+.project-card h3{
+
+    margin-bottom:10px;
+
+}
+
+.project-card p{
+
+    color:#A1A1AA;
+    margin-bottom:20px;
+
+}
+
+.project-card a{
+
+    color:#2563EB;
+    font-weight:600;
+
+}
+.about-preview{
+
+    width:90%;
+    margin:100px auto;
+    text-align:center;
+
+}
+
+.about-preview h2{
+
+    margin-bottom:20px;
+
+}
+
+.about-preview p{
+
+    max-width:700px;
+    margin:auto;
+    color:#A1A1AA;
+    line-height:1.8;
+    margin-bottom:30px;
+
+}
