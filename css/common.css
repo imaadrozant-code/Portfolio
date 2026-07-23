@@ -385,3 +385,20 @@ footer{
     }
 
 }
+.footer-logo{
+
+    width:140px;
+
+    height:auto;
+
+    margin-bottom:20px;
+
+    transition:transform .3s ease;
+
+}
+
+.footer-logo:hover{
+
+    transform:scale(1.05);
+
+}
