@@ -1,215 +1,454 @@
-<!DOCTYPE html>
-<html lang="en">
+// ======================================
+// GOOGLE SHEETS API
+// ======================================
 
-<head>
+const MEDIA_API_URL =
+    "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec?sheet=Media";
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Contact | Imaad Rozant</title>
+// ======================================
+// PAGE LOAD
+// ======================================
 
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/contact.css">
+document.addEventListener("DOMContentLoaded", () => {
 
-    <!-- Google Fonts -->
+    loadMedia();
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+});
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+// ======================================
+// LOAD MEDIA
+// ======================================
 
-</head>
+async function loadMedia() {
 
-<body>
+    try {
 
-<header>
+        const response =
+            await fetch(MEDIA_API_URL);
 
-    <nav class="navbar">
+        if (!response.ok) {
 
-        <div class="logo">
+            throw new Error(
+                `HTTP error: ${response.status}`
+            );
 
-            <a href="index.html">
+        }
 
-                <img src="images/logos/Logo2.1.png" alt="Imaad Rozant Logo">
+        const result =
+            await response.json();
 
-            </a>
+        console.log(
+            "Media API:",
+            result
+        );
 
-        </div>
 
-        <!-- Hamburger Menu -->
+        if (!result || !Array.isArray(result.data)) {
 
-        <div class="hamburger" id="hamburger">
+            throw new Error(
+                "Invalid media data received."
+            );
 
-            <span></span>
-            <span></span>
-            <span></span>
+        }
 
-        </div>
 
-        <!-- Navigation Links -->
+        buildFeaturedVideo(result.data);
 
-        <ul class="nav-links" id="navLinks">
+        buildMedia(result.data);
 
-            <li><a href="index.html">Home</a></li>
+    } catch (error) {
 
-            <li><a href="about.html">About</a></li>
+        console.error(
+            "Error loading media:",
+            error
+        );
 
-            <li><a href="projects.html">Projects</a></li>
 
-            <li><a href="gallery.html">Gallery</a></li>
-            
-            <li><a href="testimonials.html">Testimonials</a></li>
+        const featured =
+            document.getElementById(
+                "featured-video-container"
+            );
 
-            <li><a href="contact.html">Contact</a></li>
+        const media =
+            document.getElementById(
+                "media-content"
+            );
 
-        </ul>
 
-    </nav>
+        if (featured) {
 
-</header>
+            featured.innerHTML = `
 
-<section class="page-header">
+                <p class="error-message">
 
-    <h1>Let's Work Together</h1>
+                    Unable to load the latest video.
 
-    <p>
-        Whether you have a project in mind, need a developer, or simply want to connect, I'd be happy to hear from you.
-    </p>
+                </p>
 
-</section>
+            `;
 
-<section class="contact">
+        }
 
-    <div class="contact-card">
 
-        <form id="contact-form">
+        if (media) {
 
-            <div class="form-group">
+            media.innerHTML = `
 
-                <label for="name">Your Name</label>
+                <p class="error-message">
 
-                <input
-                    id="name"
-                    type="text"
-                    name="from_name"
-                    placeholder="John Smith"
-                    required>
+                    Unable to load videos right now.
 
-            </div>
+                </p>
 
-            <div class="form-group">
+            `;
 
-                <label for="email">Email Address</label>
+        }
 
-                <input
-                    id="email"
-                    type="email"
-                    name="from_email"
-                    placeholder="john@example.com"
-                    required>
+    }
 
-            </div>
+}
 
-            <div class="form-group">
 
-                <label for="message">Message</label>
+// ======================================
+// FEATURED VIDEO
+// ======================================
 
-                <textarea
-                    id="message"
-                    name="message"
-                    rows="7"
-                    placeholder="Tell me about your project..."
-                    required></textarea>
+function buildFeaturedVideo(data) {
 
-            </div>
+    const container =
+        document.getElementById(
+            "featured-video-container"
+        );
 
-            <button type="submit" class="btn-primary">
+    if (!container) return;
 
-                Send Message
 
-            </button>
+    const featured =
+        data.find(video =>
 
-        </form>
+            String(video.Featured)
+                .trim()
+                .toUpperCase() === "TRUE"
 
-    </div>
+            &&
 
-</section>
+            String(video.Active)
+                .trim()
+                .toUpperCase() === "TRUE"
 
-<footer>
+        );
 
-    <div class="footer-container">
 
-<div class="footer-column">
+    if (!featured) {
 
-    <img src="images/logos/Logo3.png"
-         alt="Imaad Rozant Logo"
-         class="footer-logo">
+        container.innerHTML = `
 
-    <p>
-        Full Stack Web Developer creating modern, responsive websites and digital experiences.
-    </p>
+            <p class="empty-message">
 
-</div>
+                No featured video available.
 
-        <div class="footer-column">
+            </p>
 
-            <h3>Quick Links</h3>
+        `;
 
-            <ul>
+        return;
 
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="media.html">Media</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="contact.html">Contact</a></li>
+    }
 
-            </ul>
 
-        </div>
+    const videoId =
+        getYouTubeId(
+            featured.MediaID
+        );
 
-        <div class="footer-column">
 
-            <h3>Social Media</h3>
+    if (!videoId) {
 
-            <ul>
+        container.innerHTML = `
 
-                <li><a href="#">GitHub</a></li>
-                <li><a href="#">LinkedIn</a></li>
-                <li><a href="#">Email</a></li>
+            <p class="error-message">
 
-            </ul>
+                Invalid featured video.
 
-        </div>
+            </p>
 
-        <div class="footer-column">
+        `;
 
-            <h3>Content Creator</h3>
+        return;
 
-            <ul>
+    }
 
-                <li><a href="https://www.youtube.com/@TPGamingSA">YouTube</a></li>
-                <li><a href="https://www.facebook.com/share/1E47VYjj9C/">Facebook Gaming</a></li>
-                <li><a href="https://www.instagram.com/tpgaming2026?igsh=Y2swMjRxNmV3emhq">Instagram Gaming</a></li>
-                <li><a href="https://www.tiktok.com/@tpgamingsa?_r=1&_t=ZS-98HFhRSPKSN">TikTok Gaming</a></li>
 
-            </ul>
+    const card =
+        document.createElement("div");
 
-        </div>
+    card.className =
+        "featured-video-card";
 
-    </div>
 
-    <div class="footer-bottom">
+    const iframe =
+        document.createElement("iframe");
 
-        <p>&copy; 2026 Imaad Rozant. All Rights Reserved.</p>
+    iframe.src =
+        `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
 
-    </div>
+    iframe.title =
+        featured.Title || "YouTube video";
 
-</footer>
+    iframe.loading =
+        "lazy";
 
-<script src="js/contact.js"></script>
-<script src="js/menu.js"></script>
-</body>
+    iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
 
-</html>
+    iframe.allowFullscreen =
+        true;
+
+
+    const title =
+        document.createElement("h3");
+
+    title.textContent =
+        featured.Title || "Featured Video";
+
+
+    card.appendChild(iframe);
+
+    card.appendChild(title);
+
+    container.innerHTML = "";
+
+    container.appendChild(card);
+
+}
+
+
+// ======================================
+// BUILD VIDEO SECTIONS
+// ======================================
+
+function buildMedia(data) {
+
+    const container =
+        document.getElementById(
+            "media-content"
+        );
+
+    if (!container) return;
+
+
+    container.innerHTML = "";
+
+
+    const platforms = [
+        "YouTube"
+    ];
+
+
+    platforms.forEach(platform => {
+
+        const videos =
+            data.filter(video =>
+
+                String(video.Platform)
+                    .trim()
+                    .toLowerCase() ===
+                    platform.toLowerCase()
+
+                &&
+
+                String(video.Active)
+                    .trim()
+                    .toUpperCase() === "TRUE"
+
+            );
+
+
+        if (videos.length === 0) return;
+
+
+        const section =
+            document.createElement("section");
+
+        section.className =
+            "platform-section";
+
+
+        const heading =
+            document.createElement("h2");
+
+        heading.textContent =
+            platform;
+
+
+        const grid =
+            document.createElement("div");
+
+        grid.className =
+            "video-grid";
+
+
+        videos.forEach(video => {
+
+            const videoId =
+                getYouTubeId(
+                    video.MediaID
+                );
+
+
+            if (!videoId) return;
+
+
+            const card =
+                document.createElement("article");
+
+            card.className =
+                "video-card";
+
+
+            const iframe =
+                document.createElement("iframe");
+
+            iframe.src =
+                `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+
+            iframe.title =
+                video.Title || "YouTube video";
+
+            iframe.loading =
+                "lazy";
+
+            iframe.allow =
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
+            iframe.allowFullscreen =
+                true;
+
+
+            const title =
+                document.createElement("h3");
+
+            title.textContent =
+                video.Title || "Untitled Video";
+
+
+            card.appendChild(iframe);
+
+            card.appendChild(title);
+
+            grid.appendChild(card);
+
+        });
+
+
+        section.appendChild(heading);
+
+        section.appendChild(grid);
+
+        container.appendChild(section);
+
+    });
+
+
+    if (!container.children.length) {
+
+        container.innerHTML = `
+
+            <p class="empty-message">
+
+                No videos available.
+
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+// ======================================
+// GET YOUTUBE VIDEO ID
+// ======================================
+
+function getYouTubeId(value) {
+
+    if (!value) return "";
+
+
+    const url =
+        String(value).trim();
+
+
+    // Already an ID
+    if (
+        !url.includes("http") &&
+        !url.includes("youtu")
+    ) {
+
+        return url;
+
+    }
+
+
+    // Standard YouTube URL
+    const watchMatch =
+        url.match(
+            /[?&]v=([^&]+)/
+        );
+
+
+    if (watchMatch) {
+
+        return watchMatch[1];
+
+    }
+
+
+    // YouTube embed
+    const embedMatch =
+        url.match(
+            /youtube\.com\/embed\/([^?&/]+)/
+        );
+
+
+    if (embedMatch) {
+
+        return embedMatch[1];
+
+    }
+
+
+    // YouTube Shorts
+    const shortsMatch =
+        url.match(
+            /youtube\.com\/shorts\/([^?&/]+)/
+        );
+
+
+    if (shortsMatch) {
+
+        return shortsMatch[1];
+
+    }
+
+
+    // youtu.be
+    const shortUrlMatch =
+        url.match(
+            /youtu\.be\/([^?&/]+)/
+        );
+
+
+    if (shortUrlMatch) {
+
+        return shortUrlMatch[1];
+
+    }
+
+
+    return "";
+
+}

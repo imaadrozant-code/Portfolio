@@ -2,46 +2,60 @@
 // GOOGLE SHEETS API
 // ======================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec?sheet=Testimonials";
-
-const POST_URL = "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec";
-
+const TESTIMONIALS_API_URL =
+    "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec?sheet=Testimonials";
 
 
+const TESTIMONIALS_POST_URL =
+    "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec";
 
+
+// ======================================
+// PAGE LOAD
+// ======================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-
     loadTestimonials();
-
 
     setupTestimonialForm();
 
-
 });
-
-
-
-
 
 
 // ======================================
 // LOAD TESTIMONIALS
 // ======================================
 
-
 async function loadTestimonials() {
+
+    const container =
+        document.getElementById(
+            "testimonials-container"
+        );
+
+    if (!container) return;
 
 
     try {
 
+        const response =
+            await fetch(
+                TESTIMONIALS_API_URL
+            );
 
-        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP error: ${response.status}`
+            );
+
+        }
 
 
-        const result = await response.json();
-
+        const result =
+            await response.json();
 
 
         console.log(
@@ -50,13 +64,21 @@ async function loadTestimonials() {
         );
 
 
+        if (!result || !Array.isArray(result.data)) {
 
-        buildTestimonials(result.data);
+            throw new Error(
+                "Invalid testimonials data."
+            );
 
+        }
+
+
+        buildTestimonials(
+            result.data
+        );
 
 
     } catch (error) {
-
 
         console.error(
             "Error loading testimonials:",
@@ -64,278 +86,234 @@ async function loadTestimonials() {
         );
 
 
+        container.innerHTML = `
+
+            <p class="error-message">
+
+                Unable to load testimonials right now.
+
+            </p>
+
+        `;
+
     }
 
-
 }
-
-
-
-
-
-
 
 
 // ======================================
 // BUILD TESTIMONIALS
 // ======================================
 
-
 function buildTestimonials(data) {
 
-
     const container =
-    document.getElementById(
-        "testimonials-container"
-    );
-
-
-
-    if (!container) {
-
-
-        console.error(
-            "Testimonials container not found."
+        document.getElementById(
+            "testimonials-container"
         );
 
 
-        return;
-
-
-    }
-
-
-
+    if (!container) return;
 
 
     container.innerHTML = "";
 
 
-
-
-
-
     if (!data || data.length === 0) {
-
 
         container.innerHTML = `
 
-        <p class="review">
-            No testimonials available.
-        </p>
+            <p class="empty-message">
+
+                No testimonials available yet.
+
+            </p>
 
         `;
 
-
         return;
-
 
     }
 
 
-
-
-
-
-
     data.forEach(item => {
 
-
-
         const card =
-        document.createElement("div");
-
+            document.createElement(
+                "article"
+            );
 
 
         card.className =
-        "testimonial-card";
-
-
-
-
+            "testimonial-card";
 
 
         const stars =
-        generateStars(item.Rating);
+            document.createElement(
+                "div"
+            );
 
+        stars.className =
+            "stars";
 
+        stars.textContent =
+            generateStars(
+                item.Rating
+            );
 
 
+        const review =
+            document.createElement(
+                "p"
+            );
 
+        review.className =
+            "review";
 
+        review.textContent =
+            `"${item.Review || ""}"`;
 
-        const avatar = `
 
-        <div class="avatar-placeholder">
+        const client =
+            document.createElement(
+                "div"
+            );
 
-            ${getInitials(item.Name)}
+        client.className =
+            "client";
 
-        </div>
 
-        `;
+        const avatar =
+            document.createElement(
+                "div"
+            );
 
+        avatar.className =
+            "avatar-placeholder";
 
+        avatar.textContent =
+            getInitials(
+                item.Name
+            );
 
 
+        const details =
+            document.createElement(
+                "div"
+            );
 
+        details.className =
+            "client-details";
 
 
+        const name =
+            document.createElement(
+                "h3"
+            );
 
-        card.innerHTML = `
+        name.textContent =
+            item.Name ||
+            "Client";
 
 
-            <div class="stars">
+        const position =
+            document.createElement(
+                "p"
+            );
 
-                ${stars}
+        position.textContent =
+            item.Position ||
+            "";
 
-            </div>
 
+        const company =
+            document.createElement(
+                "p"
+            );
 
+        company.textContent =
+            item.Company ||
+            "";
 
 
+        details.appendChild(name);
 
-            <p class="review">
+        if (item.Position) {
 
-                "${item.Review}"
+            details.appendChild(position);
 
-            </p>
+        }
 
 
+        if (item.Company) {
 
+            details.appendChild(company);
 
+        }
 
 
+        client.appendChild(avatar);
 
-            <div class="client">
+        client.appendChild(details);
 
 
+        card.appendChild(stars);
 
-                ${avatar}
+        card.appendChild(review);
 
-
-
-
-
-                <div class="client-details">
-
-
-
-                    <h3>
-
-                        ${item.Name}
-
-                    </h3>
-
-
-
-
-
-                    <p>
-
-                        ${item.Position}
-
-                    </p>
-
-
-
-
-
-                    <p>
-
-                        ${item.Company}
-
-                    </p>
-
-
-
-
-
-                </div>
-
-
-
-
-            </div>
-
-
-
-
-        `;
-
-
-
-
-
+        card.appendChild(client);
 
 
         container.appendChild(card);
 
-
-
     });
 
-
-
 }
-
-
-
-
-
-
-
-
 
 
 // ======================================
 // GENERATE STARS
 // ======================================
 
-
 function generateStars(rating) {
 
+    let value =
+        parseInt(rating, 10);
 
-    rating = parseInt(rating) || 5;
 
+    if (
+        Number.isNaN(value) ||
+        value < 1 ||
+        value > 5
+    ) {
+
+        value = 5;
+
+    }
 
 
     return (
-
-        "★".repeat(rating)
-
-        +
-
-        "☆".repeat(5 - rating)
-
+        "★".repeat(value) +
+        "☆".repeat(5 - value)
     );
 
-
 }
-
-
-
-
-
-
-
-
 
 
 // ======================================
 // GET INITIALS
 // ======================================
 
-
 function getInitials(name) {
-
 
     if (!name) return "?";
 
 
+    return String(name)
 
-    return name
+        .trim()
 
-        .split(" ")
+        .split(/\s+/)
 
         .map(part =>
             part.charAt(0)
@@ -343,315 +321,199 @@ function getInitials(name) {
 
         .join("")
 
-        .substring(0,2)
+        .substring(0, 2)
 
         .toUpperCase();
-
-
 
 }
 
 
-
-
-
-
-
-
-
 // ======================================
-// TESTIMONIAL FORM SUBMISSION
+// TESTIMONIAL FORM
 // ======================================
 
-
-function setupTestimonialForm(){
-
-
+function setupTestimonialForm() {
 
     const form =
-    document.getElementById(
-        "testimonial-form"
-    );
-
-
-
-    if(!form) return;
-
-
-
-
-
-
-
-    form.addEventListener(
-    "submit",
-    async function(event){
-
-
-
-        event.preventDefault();
-
-
-
-
-
-
-
-        const rating =
-        document.querySelector(
-            'input[name="rating"]:checked'
+        document.getElementById(
+            "testimonial-form"
         );
 
 
+    const button =
+        document.getElementById(
+            "testimonial-submit"
+        );
 
 
+    const status =
+        document.getElementById(
+            "testimonial-status"
+        );
 
 
+    if (!form) return;
 
-        if(!rating){
 
+    form.addEventListener(
+        "submit",
+        async function (event) {
 
-            alert(
-            "Please select a star rating."
-            );
+            event.preventDefault();
 
 
-            return;
+            const rating =
+                document.querySelector(
+                    'input[name="rating"]:checked'
+                );
 
 
-        }
+            if (!rating) {
 
+                if (status) {
 
+                    status.textContent =
+                        "Please select a star rating.";
 
+                }
 
+                return;
 
+            }
 
 
+            const testimonial = {
 
+                name:
+                    document.getElementById(
+                        "client-name"
+                    ).value.trim(),
 
-        const testimonial = {
+                company:
+                    document.getElementById(
+                        "client-company"
+                    ).value.trim(),
 
+                position:
+                    document.getElementById(
+                        "client-position"
+                    ).value.trim(),
 
+                review:
+                    document.getElementById(
+                        "client-review"
+                    ).value.trim(),
 
-            name:
+                rating:
+                    rating.value
 
-            document.getElementById(
-                "client-name"
-            ).value,
+            };
 
 
+            if (
+                !testimonial.name ||
+                !testimonial.company ||
+                !testimonial.review
+            ) {
 
+                if (status) {
 
+                    status.textContent =
+                        "Please complete all required fields.";
 
-            company:
+                }
 
-            document.getElementById(
-                "client-company"
-            ).value,
+                return;
 
-
-
-
-
-            position:
-
-            document.getElementById(
-                "client-position"
-            ).value,
-
-
-
-
-
-            review:
-
-            document.getElementById(
-                "client-review"
-            ).value,
-
-
-
-
-
-            rating:
-
-            rating.value
-
-
-
-
-
-        };
-
-
-
-
-
-
-
-
-
-        try {
-
-
-
-
-
-await fetch(
-    POST_URL,
-    {
-
-        method:"POST",
-
-        mode:"no-cors",
-
-        body:
-
-        new URLSearchParams(testimonial)
-
-    }
-);
-
-
-
-
-
-
-
-
-            const text =
-            await response.text();
-
-
-
-
-
-            console.log(
-                "Raw submit response:",
-                text
-            );
-
-
-
-
-
-
-
-            let result;
-
+            }
 
 
             try {
 
+                if (button) {
 
-                result =
-                JSON.parse(text);
+                    button.disabled = true;
 
+                    button.textContent =
+                        "Submitting...";
 
-            } catch {
-
-
-                result = {
-
-                    success:false,
-
-                    message:text
-
-                };
+                }
 
 
-            }
+                if (status) {
+
+                    status.textContent =
+                        "Submitting your testimonial...";
+
+                }
 
 
+                /*
+                    Google Apps Script is being called
+                    with no-cors.
 
+                    Because no-cors responses cannot be
+                    read by JavaScript, we simply wait for
+                    fetch() to complete.
+                */
 
+                await fetch(
+                    TESTIMONIALS_POST_URL,
+                    {
 
+                        method: "POST",
 
+                        mode: "no-cors",
 
-            console.log(
-                "Submit response:",
-                result
-            );
+                        body:
+                            new URLSearchParams(
+                                testimonial
+                            )
 
-
-
-
-
-
-
-
-            if(result.success){
-
-
-alert(
-"Thank you! Your testimonial has been submitted for approval."
-);
-
-
-form.reset();
-
-
-
-            } else {
-
-
-                alert(
-
-                "Submission failed. Please try again."
-
+                    }
                 );
 
 
+                if (status) {
+
+                    status.textContent =
+                        "Thank you! Your testimonial has been submitted for approval.";
+
+                }
+
+
+                form.reset();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Submission error:",
+                    error
+                );
+
+
+                if (status) {
+
+                    status.textContent =
+                        "Something went wrong. Please try again.";
+
+                }
+
+            } finally {
+
+                if (button) {
+
+                    button.disabled = false;
+
+                    button.textContent =
+                        "Submit Testimonial";
+
+                }
+
             }
 
-
-
-
-
-
-
-
-
-        } catch(error) {
-
-
-
-
-
-            console.error(
-                "Submission error:",
-                error
-            );
-
-
-
-
-
-
-
-            alert(
-
-            "Something went wrong. Please try again."
-
-            );
-
-
-
-
-
-
-
         }
-
-
-
-
-
-
-    });
-
-
-
-
+    );
 
 }

@@ -1,183 +1,221 @@
-.about{
+/* ==========================
+   ABOUT
+========================== */
 
-    width:90%;
-    margin:80px auto;
+.about {
 
-}
+    width: 90%;
 
-.about-content{
+    max-width: 1100px;
 
-    max-width:900px;
-    margin:auto;
-
-}
-
-.about h1{
-
-    font-size:48px;
-    margin-bottom:30px;
+    margin: 80px auto;
 
 }
 
-.about p{
 
-    color:#A1A1AA;
-    line-height:1.9;
-    margin-bottom:20px;
+.about-content {
 
-}
+    max-width: 900px;
 
-.skills{
-
-    width:90%;
-    margin:80px auto;
-    text-align:center;
+    margin: auto;
 
 }
 
-.skills h2{
 
-    margin-bottom:30px;
+.about h1 {
 
-}
+    font-size: 48px;
 
-.skill-list{
+    margin-bottom: 35px;
 
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:15px;
+    font-family: 'Poppins', sans-serif;
 
 }
 
-.skill-list span{
 
-    background:#1A1A1A;
-    border:1px solid #2a2a2a;
-    padding:12px 20px;
-    border-radius:30px;
-    transition:.3s;
+.about p {
+
+    color: #A1A1AA;
+
+    line-height: 1.9;
+
+    margin-bottom: 25px;
+
+}
+
+
+.about strong {
+
+    color: var(--white);
 
 }
 
-.skill-list span:hover{
 
-    background:#2563EB;
-    border-color:#2563EB;
-
-}
-/* ======================================
+/* ==========================
    CERTIFICATES
-====================================== */
+========================== */
 
-.certificates{
+.certificates {
 
-    width:90%;
-    max-width:1200px;
+    width: 90%;
 
-    margin:100px auto;
+    max-width: 1200px;
 
-}
-
-.certificates h2{
-
-    text-align:center;
-
-    margin-bottom:20px;
+    margin: 100px auto;
 
 }
 
-.certificates-intro{
 
-    max-width:700px;
+.certificates h2 {
 
-    margin:0 auto 50px;
+    text-align: center;
 
-    text-align:center;
+    margin-bottom: 20px;
 
-    color:var(--grey);
-
-    line-height:1.8;
+    font-family: 'Poppins', sans-serif;
 
 }
 
-#certificates-container{
 
-    display:grid;
+.certificates-intro {
 
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    max-width: 700px;
 
-    gap:30px;
+    margin: 0 auto 50px;
 
-}
+    text-align: center;
 
-.certificate-card{
+    color: var(--grey);
 
-    background:var(--card);
-
-    border-radius:15px;
-
-    overflow:hidden;
-
-    transition:.3s;
-
-    display:flex;
-
-    flex-direction:column;
+    line-height: 1.8;
 
 }
 
-.certificate-card:hover{
 
-    transform:translateY(-8px);
+#certificates-container {
 
-}
+    display: grid;
 
-.certificate-card img{
+    grid-template-columns:
+        repeat(auto-fit, minmax(320px, 1fr));
 
-    width:100%;
-
-    height:220px;
-
-    object-fit:contain;
-
-    background:#111;
-
-    padding:20px;
+    gap: 30px;
 
 }
 
-.certificate-content{
 
-    padding:25px;
+.certificate-card {
 
-}
+    background: var(--card);
 
-.certificate-content h3{
+    border: 1px solid #222;
 
-    margin-bottom:12px;
+    border-radius: 15px;
 
-}
+    overflow: hidden;
 
-.certificate-content p{
+    transition: .3s;
 
-    color:var(--grey);
+    display: flex;
 
-    margin-bottom:10px;
-
-}
-
-.certificate-content .btn-primary{
-
-    margin-top:20px;
+    flex-direction: column;
 
 }
 
-@media(max-width:768px){
 
-    #certificates-container{
+.certificate-card:hover {
 
-        grid-template-columns:1fr;
+    transform: translateY(-8px);
+
+    border-color: var(--blue);
+
+}
+
+
+.certificate-card img {
+
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: contain;
+
+    background: #111;
+
+    padding: 20px;
+
+}
+
+
+.certificate-content {
+
+    padding: 25px;
+
+}
+
+
+.certificate-content h3 {
+
+    margin-bottom: 12px;
+
+}
+
+
+.certificate-content p {
+
+    color: var(--grey);
+
+    margin-bottom: 10px;
+
+    line-height: 1.6;
+
+}
+
+
+.certificate-content .btn-primary {
+
+    margin-top: 15px;
+
+}
+
+
+.loading-message,
+.error-message {
+
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    color: var(--grey);
+
+    padding: 30px;
+
+}
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width: 768px) {
+
+    .about {
+
+        margin: 60px auto;
+
+    }
+
+
+    .about h1 {
+
+        font-size: 38px;
+
+    }
+
+
+    #certificates-container {
+
+        grid-template-columns: 1fr;
 
     }
 

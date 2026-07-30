@@ -4,10 +4,22 @@
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Imaad Rozant - Front-End Web Developer creating modern, responsive websites and digital experiences."
+    >
+
+    <meta name="author" content="Imaad Rozant">
 
     <title>Imaad Rozant | Portfolio</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/index.css">
 
@@ -15,39 +27,50 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
 </head>
 
 <body>
 
-    <!-- Navigation -->
-
-    <header>
+<header>
 
     <nav class="navbar">
 
         <div class="logo">
 
-            <a href="index.html">
+            <a href="index.html" aria-label="Imaad Rozant Home">
 
-                <img src="images/logos/Logo2.1.png" alt="Imaad Rozant Logo">
+                <img
+                    src="images/logos/Logo2.1.png"
+                    alt="Imaad Rozant Logo"
+                >
 
             </a>
 
         </div>
 
-        <!-- Hamburger Menu -->
+        <!-- Mobile Menu Button -->
 
-        <div class="hamburger" id="hamburger">
+        <button
+            class="hamburger"
+            id="hamburger"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="navLinks"
+        >
 
             <span></span>
             <span></span>
             <span></span>
 
-        </div>
+        </button>
 
-        <!-- Navigation Links -->
+        <!-- Navigation -->
 
         <ul class="nav-links" id="navLinks">
 
@@ -57,7 +80,7 @@
 
             <li><a href="projects.html">Projects</a></li>
 
-            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="media.html">Media</a></li>
 
             <li><a href="testimonials.html">Testimonials</a></li>
 
@@ -67,73 +90,61 @@
 
     </nav>
 
-    </header>
+</header>
 
-    <!-- Hero -->
 
-    <section class="hero">
+<!-- HERO -->
 
-        <div class="hero-text">
+<main>
 
-            <p>Hi, I'm</p>
+<section class="hero">
 
-            <h1>Imaad Rozant</h1>
+    <div class="hero-text">
 
-            <h2>Front-end Web Developer</h2>
+        <p>Hi, I'm</p>
 
-            <p class="description">
+        <h1>Imaad Rozant</h1>
 
-                I design and build responsive websites 
+        <h2>Front-End Web Developer</h2>
 
-            </p>
+        <p class="description">
 
-            <div class="buttons">
+            I design and build clean, modern and responsive websites
+            that help businesses and individuals create a strong
+            digital presence.
 
-                <a href="/projects.html" class="btn-primary">View Projects</a>
+        </p>
 
-                <a href="/contact.html" class="btn-secondary">Contact Me</a>
+        <div class="buttons">
 
-            </div>
+            <a href="projects.html" class="btn-primary">
+                View Projects
+            </a>
 
-        </div>
+            <a href="contact.html" class="btn-secondary">
+                Contact Me
+            </a>
 
-        <div class="hero-image">
-
-            <div class="glow"></div>
-
-            <img src="images/hero/Main.png" alt="Imaad Rozant">
-
-        </div>
-
-    </section>
-
-    <!-- <section class="featured-projects">
-
-    <h2>Featured Projects</h2>
-
-    <div class="project-grid">
-
-        <div class="project-card">
-            <h3>Anabella Printing</h3>
-            <p>Business Website</p>
-            <a href="https://anabellaprinting.co.za/">View Project</a>
-        </div>
-
-        <div class="project-card">
-            <h3>The Chocolate Fairy</h3>
-            <p>Business Website</p>
-            <a href="#">View Project</a>
-        </div>
-
-        <div class="project-card">
-            <h3>Project Three</h3>
-            <p>Portfolio Website</p>
-            <a href="#">View Project</a>
         </div>
 
     </div>
 
-</section> -->
+
+    <div class="hero-image">
+
+        <div class="glow"></div>
+
+        <img
+            src="images/hero/Main.png"
+            alt="Imaad Rozant"
+        >
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT PREVIEW -->
 
 <section class="about-preview">
 
@@ -143,32 +154,47 @@
 
         <p>
 
-            I am a Front-End Website Developer, Team leader, Father and Family man, who is passionate about creating clean, 
-            responsive and user friendly websites. I enjoy turning ideas into digital experiences while continuously learning new skills
+            I am a Front-End Web Developer, team leader, father and
+            family man who is passionate about creating clean,
+            responsive and user-friendly websites.
+
+            I enjoy turning ideas into digital experiences while
+            continuously learning new skills and technologies.
 
         </p>
 
-        <a href="about.html" class="btn-primary">Read More</a>
+        <a href="about.html" class="btn-primary">
+            Read More
+        </a>
 
     </div>
 
 </section>
 
+</main>
+
+
+<!-- FOOTER -->
+
 <footer>
 
     <div class="footer-container">
 
-<div class="footer-column">
+        <div class="footer-column">
 
-    <img src="images/logos/Logo3.png"
-         alt="Imaad Rozant Logo"
-         class="footer-logo">
+            <img
+                src="images/logos/Logo3.png"
+                alt="Imaad Rozant Logo"
+                class="footer-logo"
+            >
 
-    <p>
-        Front-End Web Developer
-    </p>
+            <p>
+                Front-End Web Developer creating modern,
+                responsive websites and digital experiences.
+            </p>
 
-</div>
+        </div>
+
 
         <div class="footer-column">
 
@@ -182,10 +208,11 @@
                 <li><a href="media.html">Media</a></li>
                 <li><a href="testimonials.html">Testimonials</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                
+
             </ul>
 
         </div>
+
 
         <div class="footer-column">
 
@@ -195,11 +222,12 @@
 
                 <li><a href="#">Facebook</a></li>
                 <li><a href="#">LinkedIn</a></li>
-                <li><a href="#">Tiktok</a></li>
+                <li><a href="#">TikTok</a></li>
 
             </ul>
 
         </div>
+
 
         <div class="footer-column">
 
@@ -207,10 +235,45 @@
 
             <ul>
 
-                <li><a href="https://www.youtube.com/@TPGamingSA">YouTube</a></li>
-                <li><a href="https://www.facebook.com/share/1E47VYjj9C/">Facebook Gaming</a></li>
-                <li><a href="https://www.instagram.com/tpgaming2026?igsh=Y2swMjRxNmV3emhq">Instagram Gaming</a></li>
-                <li><a href="https://www.tiktok.com/@tpgamingsa?_r=1&_t=ZS-98HFhRSPKSN">TikTok Gaming</a></li>
+                <li>
+                    <a
+                        href="https://www.youtube.com/@TPGamingSA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        YouTube
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="https://www.facebook.com/share/1E47VYjj9C/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Facebook Gaming
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="https://www.instagram.com/tpgaming2026?igsh=Y2swMjRxNmV3emhq"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Instagram Gaming
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="https://www.tiktok.com/@tpgamingsa?_r=1&_t=ZS-98HFhRSPKSN"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        TikTok Gaming
+                    </a>
+                </li>
 
             </ul>
 
@@ -218,15 +281,21 @@
 
     </div>
 
+
     <div class="footer-bottom">
 
-        <p>&copy; 2026 Imaad Rozant. All Rights Reserved.</p>
+        <p>
+            &copy; 2026 Imaad Rozant. All Rights Reserved.
+        </p>
 
     </div>
 
 </footer>
 
+
+<script src="js/main.js"></script>
 <script src="js/menu.js"></script>
+
 </body>
 
 </html>

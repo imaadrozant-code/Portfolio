@@ -2,13 +2,20 @@
 // GOOGLE SHEETS API
 // ======================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec?sheet=Media";
+const MEDIA_API_URL =
+    "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec?sheet=Media";
+
+
+// ======================================
+// PAGE LOAD
+// ======================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
     loadMedia();
 
 });
+
 
 // ======================================
 // LOAD MEDIA
@@ -18,21 +25,91 @@ async function loadMedia() {
 
     try {
 
-        const response = await fetch(API_URL);
-        const result = await response.json();
+        const response =
+            await fetch(MEDIA_API_URL);
 
-        console.log("API Response:", result);
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP error: ${response.status}`
+            );
+
+        }
+
+        const result =
+            await response.json();
+
+        console.log(
+            "Media API:",
+            result
+        );
+
+
+        if (!result || !Array.isArray(result.data)) {
+
+            throw new Error(
+                "Invalid media data received."
+            );
+
+        }
+
 
         buildFeaturedVideo(result.data);
+
         buildMedia(result.data);
 
     } catch (error) {
 
-        console.error("Error loading media:", error);
+        console.error(
+            "Error loading media:",
+            error
+        );
+
+
+        const featured =
+            document.getElementById(
+                "featured-video-container"
+            );
+
+        const media =
+            document.getElementById(
+                "media-content"
+            );
+
+
+        if (featured) {
+
+            featured.innerHTML = `
+
+                <p class="error-message">
+
+                    Unable to load the latest video.
+
+                </p>
+
+            `;
+
+        }
+
+
+        if (media) {
+
+            media.innerHTML = `
+
+                <p class="error-message">
+
+                    Unable to load videos right now.
+
+                </p>
+
+            `;
+
+        }
 
     }
 
 }
+
 
 // ======================================
 // FEATURED VIDEO
@@ -40,105 +117,233 @@ async function loadMedia() {
 
 function buildFeaturedVideo(data) {
 
-    const container = document.getElementById("featured-video-container");
+    const container =
+        document.getElementById(
+            "featured-video-container"
+        );
 
     if (!container) return;
 
-    const featured = data.find(video =>
-        String(video.Featured).toUpperCase() === "TRUE"
-    );
+
+    const featured =
+        data.find(video =>
+
+            String(video.Featured)
+                .trim()
+                .toUpperCase() === "TRUE"
+
+            &&
+
+            String(video.Active)
+                .trim()
+                .toUpperCase() === "TRUE"
+
+        );
+
 
     if (!featured) {
 
-        container.innerHTML = "<p>No featured video available.</p>";
+        container.innerHTML = `
+
+            <p class="empty-message">
+
+                No featured video available.
+
+            </p>
+
+        `;
+
         return;
 
     }
 
-    const videoId = getYouTubeId(featured.MediaID);
 
-    container.innerHTML = `
+    const videoId =
+        getYouTubeId(
+            featured.MediaID
+        );
 
-        <div class="video-card featured">
 
-            <iframe
-                width="100%"
-                height="450"
-                src="https://www.youtube.com/embed/${videoId}"
-                title="${featured.Title}"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-            </iframe>
+    if (!videoId) {
 
-            <h3>${featured.Title}</h3>
+        container.innerHTML = `
 
-        </div>
+            <p class="error-message">
 
-    `;
+                Invalid featured video.
+
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "featured-video-card";
+
+
+    const iframe =
+        document.createElement("iframe");
+
+    iframe.src =
+        `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+
+    iframe.title =
+        featured.Title || "YouTube video";
+
+    iframe.loading =
+        "lazy";
+
+    iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
+    iframe.allowFullscreen =
+        true;
+
+
+    const title =
+        document.createElement("h3");
+
+    title.textContent =
+        featured.Title || "Featured Video";
+
+
+    card.appendChild(iframe);
+
+    card.appendChild(title);
+
+    container.innerHTML = "";
+
+    container.appendChild(card);
 
 }
 
+
 // ======================================
-// VIDEO SECTIONS
+// BUILD VIDEO SECTIONS
 // ======================================
 
 function buildMedia(data) {
 
-    const container = document.getElementById("media-content");
+    const container =
+        document.getElementById(
+            "media-content"
+        );
+
+    if (!container) return;
+
 
     container.innerHTML = "";
 
-    const platforms = ["YouTube"];
+
+    const platforms = [
+        "YouTube"
+    ];
+
 
     platforms.forEach(platform => {
 
-        const videos = data.filter(video =>
+        const videos =
+            data.filter(video =>
 
-            video.Platform === platform &&
-            String(video.Active).toUpperCase() === "TRUE"
+                String(video.Platform)
+                    .trim()
+                    .toLowerCase() ===
+                    platform.toLowerCase()
 
-        );
+                &&
+
+                String(video.Active)
+                    .trim()
+                    .toUpperCase() === "TRUE"
+
+            );
+
 
         if (videos.length === 0) return;
 
-        const section = document.createElement("section");
 
-        section.className = "platform-section";
+        const section =
+            document.createElement("section");
 
-        section.innerHTML = `<h2>${platform}</h2>`;
+        section.className =
+            "platform-section";
 
-        const grid = document.createElement("div");
 
-        grid.className = "video-grid";
+        const heading =
+            document.createElement("h2");
+
+        heading.textContent =
+            platform;
+
+
+        const grid =
+            document.createElement("div");
+
+        grid.className =
+            "video-grid";
+
 
         videos.forEach(video => {
 
-            const videoId = getYouTubeId(video.MediaID);
+            const videoId =
+                getYouTubeId(
+                    video.MediaID
+                );
 
-            const card = document.createElement("div");
 
-            card.className = "video-card";
+            if (!videoId) return;
 
-            card.innerHTML = `
 
-                <iframe
-                    width="100%"
-                    height="250"
-                    src="https://www.youtube.com/embed/${videoId}"
-                    title="${video.Title}"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
+            const card =
+                document.createElement("article");
 
-                <h3>${video.Title}</h3>
+            card.className =
+                "video-card";
 
-            `;
+
+            const iframe =
+                document.createElement("iframe");
+
+            iframe.src =
+                `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+
+            iframe.title =
+                video.Title || "YouTube video";
+
+            iframe.loading =
+                "lazy";
+
+            iframe.allow =
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
+            iframe.allowFullscreen =
+                true;
+
+
+            const title =
+                document.createElement("h3");
+
+            title.textContent =
+                video.Title || "Untitled Video";
+
+
+            card.appendChild(iframe);
+
+            card.appendChild(title);
 
             grid.appendChild(card);
 
         });
+
+
+        section.appendChild(heading);
 
         section.appendChild(grid);
 
@@ -146,25 +351,103 @@ function buildMedia(data) {
 
     });
 
+
+    if (!container.children.length) {
+
+        container.innerHTML = `
+
+            <p class="empty-message">
+
+                No videos available.
+
+            </p>
+
+        `;
+
+    }
+
 }
+
 
 // ======================================
 // GET YOUTUBE VIDEO ID
 // ======================================
 
-function getYouTubeId(url) {
+function getYouTubeId(value) {
 
-    if (!url) return "";
+    if (!value) return "";
 
-    if (!url.includes("http")) return url;
 
-    const match = url.match(/[?&]v=([^&]+)/);
+    const url =
+        String(value).trim();
 
-    if (match) return match[1];
 
-    const embedMatch = url.match(/embed\/([^?&]+)/);
+    // Already an ID
+    if (
+        !url.includes("http") &&
+        !url.includes("youtu")
+    ) {
 
-    if (embedMatch) return embedMatch[1];
+        return url;
+
+    }
+
+
+    // Standard YouTube URL
+    const watchMatch =
+        url.match(
+            /[?&]v=([^&]+)/
+        );
+
+
+    if (watchMatch) {
+
+        return watchMatch[1];
+
+    }
+
+
+    // YouTube embed
+    const embedMatch =
+        url.match(
+            /youtube\.com\/embed\/([^?&/]+)/
+        );
+
+
+    if (embedMatch) {
+
+        return embedMatch[1];
+
+    }
+
+
+    // YouTube Shorts
+    const shortsMatch =
+        url.match(
+            /youtube\.com\/shorts\/([^?&/]+)/
+        );
+
+
+    if (shortsMatch) {
+
+        return shortsMatch[1];
+
+    }
+
+
+    // youtu.be
+    const shortUrlMatch =
+        url.match(
+            /youtu\.be\/([^?&/]+)/
+        );
+
+
+    if (shortUrlMatch) {
+
+        return shortUrlMatch[1];
+
+    }
+
 
     return "";
 

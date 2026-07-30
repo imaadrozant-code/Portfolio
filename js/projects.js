@@ -2,7 +2,13 @@
 // GOOGLE SHEETS API
 // ======================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbz6p4pZR99lZd5Uvm2s_eK0Ca_6rp3bP6U7jkDvAg2ALOwzYyCw2CkyeyI3MPdDn6HgKA/exec?sheet=Projects";
+const PROJECTS_API_URL =
+    "https://script.google.com/macros/s/AKfycbz6p4pZR99lZd5Uvm2s_eK0Ca_6rp3bP6U7jkDvAg2ALOwzYyCw2CkyeyI3MPdDn6HgKA/exec?sheet=Projects";
+
+
+// ======================================
+// PAGE LOAD
+// ======================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -10,28 +16,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+
 // ======================================
 // LOAD PROJECTS
 // ======================================
 
 async function loadProjects() {
 
+    const container =
+        document.getElementById("projects-container");
+
+    if (!container) return;
+
     try {
 
-        const response = await fetch(API_URL);
-        const result = await response.json();
+        const response =
+            await fetch(PROJECTS_API_URL);
 
-        console.log("Projects API:", result);
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP error: ${response.status}`
+            );
+
+        }
+
+        const result =
+            await response.json();
+
+        console.log(
+            "Projects API:",
+            result
+        );
+
+        if (!result || !Array.isArray(result.data)) {
+
+            throw new Error(
+                "Invalid projects data received."
+            );
+
+        }
 
         buildProjects(result.data);
 
     } catch (error) {
 
-        console.error("Error loading projects:", error);
+        console.error(
+            "Error loading projects:",
+            error
+        );
+
+        container.innerHTML = `
+
+            <p class="error-message">
+
+                Unable to load projects right now.
+                Please try again later.
+
+            </p>
+
+        `;
 
     }
 
 }
+
 
 // ======================================
 // BUILD PROJECTS
@@ -39,91 +88,158 @@ async function loadProjects() {
 
 function buildProjects(data) {
 
-    const container = document.getElementById("projects-container");
+    const container =
+        document.getElementById(
+            "projects-container"
+        );
 
     if (!container) return;
 
     container.innerHTML = "";
 
-    const projects = data.filter(project =>
-        String(project.Active).toUpperCase() === "TRUE"
-    );
+    const projects =
+        data.filter(project =>
+
+            String(project.Active)
+                .trim()
+                .toUpperCase() === "TRUE"
+
+        );
+
 
     if (projects.length === 0) {
 
-        container.innerHTML = "<p>No projects available.</p>";
+        container.innerHTML = `
+
+            <p class="empty-message">
+
+                No projects available at the moment.
+
+            </p>
+
+        `;
+
         return;
 
     }
 
+
     projects.forEach(project => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("article");
 
-        card.className = "project-card";
+        card.className =
+            "project-card";
 
-        card.innerHTML = `
 
-            <img src="${project.Image}" alt="${project.Title}">
+        const image =
+            document.createElement("img");
 
-            <div class="project-content">
+        image.src =
+            project.Image || "images/projects/default.png";
 
-                <h2>${project.Title}</h2>
+        image.alt =
+            project.Title || "Project preview";
 
-                <p>${project.Description}</p>
+        image.loading = "lazy";
 
-                ${buildButtons(project)}
 
-            </div>
+        const content =
+            document.createElement("div");
 
-        `;
+        content.className =
+            "project-content";
+
+
+        const title =
+            document.createElement("h2");
+
+        title.textContent =
+            project.Title || "Untitled Project";
+
+
+        const description =
+            document.createElement("p");
+
+        description.textContent =
+            project.Description ||
+            "Project description unavailable.";
+
+
+        const buttons =
+            document.createElement("div");
+
+        buttons.className =
+            "project-buttons";
+
+
+        if (project.Website) {
+
+            const website =
+                document.createElement("a");
+
+            website.href =
+                project.Website;
+
+            website.target =
+                "_blank";
+
+            website.rel =
+                "noopener noreferrer";
+
+            website.className =
+                "btn-primary";
+
+            website.textContent =
+                "Visit Website";
+
+            buttons.appendChild(
+                website
+            );
+
+        }
+
+
+        if (project.GitHub) {
+
+            const github =
+                document.createElement("a");
+
+            github.href =
+                project.GitHub;
+
+            github.target =
+                "_blank";
+
+            github.rel =
+                "noopener noreferrer";
+
+            github.className =
+                "btn-secondary";
+
+            github.textContent =
+                "GitHub";
+
+            buttons.appendChild(
+                github
+            );
+
+        }
+
+
+        content.appendChild(title);
+
+        content.appendChild(description);
+
+        content.appendChild(buttons);
+
+        card.appendChild(image);
+
+        card.appendChild(content);
 
         container.appendChild(card);
 
     });
-
-}
-
-// ======================================
-// BUILD BUTTONS
-// ======================================
-
-function buildButtons(project) {
-
-    let buttons = "";
-
-    if (project.Website) {
-
-        buttons += `
-
-            <a href="${project.Website}"
-               target="_blank"
-               class="btn-primary">
-
-               Visit Website
-
-            </a>
-
-        `;
-
-    }
-
-    if (project.GitHub) {
-
-        buttons += `
-
-            <a href="${project.GitHub}"
-               target="_blank"
-               class="btn-secondary">
-
-               GitHub
-
-            </a>
-
-        `;
-
-    }
-
-    return buttons;
 
 }

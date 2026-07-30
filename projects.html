@@ -4,18 +4,34 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="View websites and digital projects developed by Imaad Rozant."
+    >
+
+    <meta name="author" content="Imaad Rozant">
 
     <title>Projects | Imaad Rozant</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/projects.css">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
 </head>
 
@@ -27,25 +43,33 @@
 
         <div class="logo">
 
-            <a href="index.html">
+            <a href="index.html" aria-label="Imaad Rozant Home">
 
-                <img src="images/logos/Logo2.1.png" alt="Imaad Rozant Logo">
+                <img
+                    src="images/logos/Logo2.1.png"
+                    alt="Imaad Rozant Logo"
+                >
 
             </a>
 
         </div>
 
-        <!-- Hamburger Menu -->
 
-        <div class="hamburger" id="hamburger">
+        <button
+            class="hamburger"
+            id="hamburger"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="navLinks"
+        >
 
             <span></span>
             <span></span>
             <span></span>
 
-        </div>
+        </button>
 
-        <!-- Navigation Links -->
 
         <ul class="nav-links" id="navLinks">
 
@@ -67,6 +91,9 @@
 
 </header>
 
+
+<main>
+
 <section class="page-header">
 
     <h1>Projects</h1>
@@ -77,33 +104,41 @@
 
 </section>
 
-<section class="projects">
 
-    <!-- Project Card -->
+<section
+    class="projects"
+    id="projects-container"
+    aria-live="polite"
+>
 
-<section class="projects" id="projects-container">
+    <p class="loading-message">
+        Loading projects...
+    </p>
 
 </section>
 
-    <!-- Copy this card for future projects -->
+</main>
 
-</section>
 
 <footer>
 
     <div class="footer-container">
 
-<div class="footer-column">
+        <div class="footer-column">
 
-    <img src="images/logos/Logo3.png"
-         alt="Imaad Rozant Logo"
-         class="footer-logo">
+            <img
+                src="images/logos/Logo3.png"
+                alt="Imaad Rozant Logo"
+                class="footer-logo"
+            >
 
-    <p>
-        Front-End Web Developer
-    </p>
+            <p>
+                Front-End Web Developer creating modern,
+                responsive websites and digital experiences.
+            </p>
 
-</div>
+        </div>
+
 
         <div class="footer-column">
 
@@ -122,6 +157,7 @@
 
         </div>
 
+
         <div class="footer-column">
 
             <h3>Social Media</h3>
@@ -130,11 +166,12 @@
 
                 <li><a href="#">Facebook</a></li>
                 <li><a href="#">LinkedIn</a></li>
-                <li><a href="#">Tiktok</a></li>
+                <li><a href="#">TikTok</a></li>
 
             </ul>
 
         </div>
+
 
         <div class="footer-column">
 
@@ -142,10 +179,45 @@
 
             <ul>
 
-                <li><a href="https://www.youtube.com/@TPGamingSA">YouTube</a></li>
-                <li><a href="https://www.facebook.com/share/1E47VYjj9C/">Facebook Gaming</a></li>
-                <li><a href="https://www.instagram.com/tpgaming2026?igsh=Y2swMjRxNmV3emhq">Instagram Gaming</a></li>
-                <li><a href="https://www.tiktok.com/@tpgamingsa?_r=1&_t=ZS-98HFhRSPKSN">TikTok Gaming</a></li>
+                <li>
+                    <a
+                        href="https://www.youtube.com/@TPGamingSA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        YouTube
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="https://www.facebook.com/share/1E47VYjj9C/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Facebook Gaming
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="https://www.instagram.com/tpgaming2026?igsh=Y2swMjRxNmV3emhq"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Instagram Gaming
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="https://www.tiktok.com/@tpgamingsa?_r=1&_t=ZS-98HFhRSPKSN"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        TikTok Gaming
+                    </a>
+                </li>
 
             </ul>
 
@@ -153,15 +225,21 @@
 
     </div>
 
+
     <div class="footer-bottom">
 
-        <p>&copy; 2026 Imaad Rozant. All Rights Reserved.</p>
+        <p>
+            &copy; 2026 Imaad Rozant. All Rights Reserved.
+        </p>
 
     </div>
 
 </footer>
+
+
 <script src="js/projects.js"></script>
 <script src="js/menu.js"></script>
+
 </body>
 
 </html>
