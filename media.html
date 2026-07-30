@@ -6,15 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Contact | Imaad Rozant</title>
+    <title>Media | Imaad Rozant</title>
 
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="css/media.css">
 
     <!-- Google Fonts -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
@@ -30,9 +28,7 @@
         <div class="logo">
 
             <a href="index.html">
-
                 <img src="images/logos/Logo2.1.png" alt="Imaad Rozant Logo">
-
             </a>
 
         </div>
@@ -47,7 +43,7 @@
 
         </div>
 
-        <!-- Navigation Links -->
+        <!-- Navigation -->
 
         <ul class="nav-links" id="navLinks">
 
@@ -57,8 +53,8 @@
 
             <li><a href="projects.html">Projects</a></li>
 
-            <li><a href="gallery.html">Gallery</a></li>
-            
+            <li><a href="media.html" class="active">Media</a></li>
+
             <li><a href="testimonials.html">Testimonials</a></li>
 
             <li><a href="contact.html">Contact</a></li>
@@ -69,88 +65,95 @@
 
 </header>
 
+<!-- Page Header -->
+
 <section class="page-header">
 
-    <h1>Let's Work Together</h1>
+    <h1>Media</h1>
 
     <p>
-        Whether you have a project in mind, need a developer, or simply want to connect, I'd be happy to hear from you.
+        Explore my journey through web development, gaming and content creation.
     </p>
 
 </section>
 
-<section class="contact">
+<!-- Featured Video -->
 
-    <div class="contact-card">
+<!-- Featured Video -->
 
-        <form id="contact-form">
+<section class="featured-video">
 
-            <div class="form-group">
+    <h2>Latest Video</h2>
 
-                <label for="name">Your Name</label>
+    <div id="featured-video-container">
 
-                <input
-                    id="name"
-                    type="text"
-                    name="from_name"
-                    placeholder="John Smith"
-                    required>
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="email">Email Address</label>
-
-                <input
-                    id="email"
-                    type="email"
-                    name="from_email"
-                    placeholder="john@example.com"
-                    required>
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="message">Message</label>
-
-                <textarea
-                    id="message"
-                    name="message"
-                    rows="7"
-                    placeholder="Tell me about your project..."
-                    required></textarea>
-
-            </div>
-
-            <button type="submit" class="btn-primary">
-
-                Send Message
-
-            </button>
-
-        </form>
+        <p>Loading latest video...</p>
 
     </div>
 
 </section>
 
+<!-- Social Media Videos -->
+
+<!-- ==========================
+     SOCIAL MEDIA VIDEOS
+========================== -->
+
+<section class="social-videos">
+
+    <h2>More Videos </h2>
+
+    <div id="media-content"></div>
+
+</section>
+
+<!-- Photo Gallery -->
+
+<section class="media">
+
+    <h2>Photo Gallery</h2>
+
+    <div class="media-grid">
+
+        <div class="media-item">
+
+            <img src="images/media/Screenshot 2026-07-23 120049.jpg" alt="Media Image">
+
+        </div>
+
+        <!-- Duplicate this block for more photos -->
+
+    </div>
+
+</section>
+
+<!-- Lightbox -->
+
+<div class="lightbox" id="lightbox">
+
+    <span class="close">&times;</span>
+
+    <img id="lightbox-img" src="" alt="Preview">
+
+</div>
+
+<!-- Footer -->
+
 <footer>
 
     <div class="footer-container">
 
-<div class="footer-column">
+        <div class="footer-column">
 
-    <img src="images/logos/Logo3.png"
-         alt="Imaad Rozant Logo"
-         class="footer-logo">
+            <img src="images/logos/Logo3.png"
+                 alt="Imaad Rozant Logo"
+                 class="footer-logo">
 
-    <p>
-        Full Stack Web Developer creating modern, responsive websites and digital experiences.
-    </p>
+            <p>
+                Full Stack Web Developer creating modern, responsive websites and digital experiences.
+            </p>
 
-</div>
+        </div>
 
         <div class="footer-column">
 
@@ -171,13 +174,13 @@
 
         <div class="footer-column">
 
-            <h3>Social Media</h3>
+            <h3>Professional</h3>
 
             <ul>
 
                 <li><a href="#">GitHub</a></li>
                 <li><a href="#">LinkedIn</a></li>
-                <li><a href="#">Email</a></li>
+                <li><a href="#">Facebook</a></li>
 
             </ul>
 
@@ -185,14 +188,14 @@
 
         <div class="footer-column">
 
-            <h3>Content Creator</h3>
+            <h3>Gaming & Content</h3>
 
             <ul>
 
-                <li><a href="https://www.youtube.com/@TPGamingSA">YouTube</a></li>
-                <li><a href="https://www.facebook.com/share/1E47VYjj9C/">Facebook Gaming</a></li>
-                <li><a href="https://www.instagram.com/tpgaming2026?igsh=Y2swMjRxNmV3emhq">Instagram Gaming</a></li>
-                <li><a href="https://www.tiktok.com/@tpgamingsa?_r=1&_t=ZS-98HFhRSPKSN">TikTok Gaming</a></li>
+                <li><a href="https://www.youtube.com/@TPGamingSA" target="_blank">YouTube</a></li>
+                <li><a href="https://www.facebook.com/share/1E47VYjj9C/" target="_blank">Facebook Gaming</a></li>
+                <li><a href="https://www.instagram.com/tpgaming2026?igsh=Y2swMjRxNmV3emhq" target="_blank">Instagram Gaming</a></li>
+                <li><a href="https://www.tiktok.com/@tpgamingsa?_r=1&_t=ZS-98HFhRSPKSN" target="_blank">TikTok Gaming</a></li>
 
             </ul>
 
@@ -208,8 +211,8 @@
 
 </footer>
 
-<script src="js/contact.js"></script>
+<script src="js/media.js"></script>
 <script src="js/menu.js"></script>
-</body>
 
+</body>
 </html>

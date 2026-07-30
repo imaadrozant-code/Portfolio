@@ -117,3 +117,29 @@
     font-size:.8rem;
 
 }
+.btn-secondary{
+
+    display:inline-block;
+
+    margin-top:15px;
+    margin-left:10px;
+
+    padding:12px 24px;
+
+    background:transparent;
+
+    border:2px solid var(--blue);
+
+    color:var(--white);
+
+    border-radius:8px;
+
+    transition:.3s;
+
+}
+
+.btn-secondary:hover{
+
+    background:var(--blue);
+
+}

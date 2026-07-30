@@ -66,3 +66,119 @@
     border-color:#2563EB;
 
 }
+/* ======================================
+   CERTIFICATES
+====================================== */
+
+.certificates{
+
+    width:90%;
+    max-width:1200px;
+
+    margin:100px auto;
+
+}
+
+.certificates h2{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+.certificates-intro{
+
+    max-width:700px;
+
+    margin:0 auto 50px;
+
+    text-align:center;
+
+    color:var(--grey);
+
+    line-height:1.8;
+
+}
+
+#certificates-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+
+}
+
+.certificate-card{
+
+    background:var(--card);
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    transition:.3s;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.certificate-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.certificate-card img{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:contain;
+
+    background:#111;
+
+    padding:20px;
+
+}
+
+.certificate-content{
+
+    padding:25px;
+
+}
+
+.certificate-content h3{
+
+    margin-bottom:12px;
+
+}
+
+.certificate-content p{
+
+    color:var(--grey);
+
+    margin-bottom:10px;
+
+}
+
+.certificate-content .btn-primary{
+
+    margin-top:20px;
+
+}
+
+@media(max-width:768px){
+
+    #certificates-container{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
