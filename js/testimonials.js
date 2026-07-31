@@ -2,11 +2,10 @@
 // GOOGLE SHEETS API
 // ======================================
 
-const TESTIMONIALS_API_URL =
+const API_URL =
     "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec?sheet=Testimonials";
 
-
-const TESTIMONIALS_POST_URL =
+const POST_URL =
     "https://script.google.com/macros/s/AKfycbwK5X7RDn4Z05lhpmd314vRNdLbo0a8nm-VuWQirk91UqtdzH_W05s0KE-RZemgLpzCPg/exec";
 
 
@@ -14,13 +13,16 @@ const TESTIMONIALS_POST_URL =
 // PAGE LOAD
 // ======================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    loadTestimonials();
+        loadTestimonials();
 
-    setupTestimonialForm();
+        setupTestimonialForm();
 
-});
+    }
+);
 
 
 // ======================================
@@ -40,15 +42,13 @@ async function loadTestimonials() {
     try {
 
         const response =
-            await fetch(
-                TESTIMONIALS_API_URL
-            );
+            await fetch(API_URL);
 
 
         if (!response.ok) {
 
             throw new Error(
-                `HTTP error: ${response.status}`
+                "Unable to connect to Google Sheets."
             );
 
         }
@@ -64,17 +64,18 @@ async function loadTestimonials() {
         );
 
 
-        if (!result || !Array.isArray(result.data)) {
+        if (!result.success) {
 
             throw new Error(
-                "Invalid testimonials data."
+                result.message ||
+                "Unable to load testimonials."
             );
 
         }
 
 
         buildTestimonials(
-            result.data
+            result.data || []
         );
 
 
@@ -88,9 +89,10 @@ async function loadTestimonials() {
 
         container.innerHTML = `
 
-            <p class="error-message">
+            <p class="review">
 
-                Unable to load testimonials right now.
+                Unable to load testimonials
+                at this time.
 
             </p>
 
@@ -123,7 +125,7 @@ function buildTestimonials(data) {
 
         container.innerHTML = `
 
-            <p class="empty-message">
+            <p class="review">
 
                 No testimonials available yet.
 
@@ -138,10 +140,9 @@ function buildTestimonials(data) {
 
     data.forEach(item => {
 
+
         const card =
-            document.createElement(
-                "article"
-            );
+            document.createElement("div");
 
 
         card.className =
@@ -149,119 +150,75 @@ function buildTestimonials(data) {
 
 
         const stars =
-            document.createElement(
-                "div"
-            );
-
-        stars.className =
-            "stars";
-
-        stars.textContent =
-            generateStars(
-                item.Rating
-            );
+            generateStars(item.Rating);
 
 
-        const review =
-            document.createElement(
-                "p"
-            );
+        const avatar = `
 
-        review.className =
-            "review";
+            <div class="avatar-placeholder">
 
-        review.textContent =
-            `"${item.Review || ""}"`;
+                ${getInitials(item.Name)}
 
+            </div>
 
-        const client =
-            document.createElement(
-                "div"
-            );
-
-        client.className =
-            "client";
+        `;
 
 
-        const avatar =
-            document.createElement(
-                "div"
-            );
+        card.innerHTML = `
 
-        avatar.className =
-            "avatar-placeholder";
+            <div>
 
-        avatar.textContent =
-            getInitials(
-                item.Name
-            );
+                <div class="stars">
+
+                    ${stars}
+
+                </div>
 
 
-        const details =
-            document.createElement(
-                "div"
-            );
+                <p class="review">
 
-        details.className =
-            "client-details";
+                    "${escapeHTML(item.Review)}"
 
+                </p>
 
-        const name =
-            document.createElement(
-                "h3"
-            );
-
-        name.textContent =
-            item.Name ||
-            "Client";
+            </div>
 
 
-        const position =
-            document.createElement(
-                "p"
-            );
+            <div class="client">
 
-        position.textContent =
-            item.Position ||
-            "";
+                ${avatar}
 
+                <div class="client-details">
 
-        const company =
-            document.createElement(
-                "p"
-            );
+                    <h3>
 
-        company.textContent =
-            item.Company ||
-            "";
+                        ${escapeHTML(item.Name)}
+
+                    </h3>
 
 
-        details.appendChild(name);
-
-        if (item.Position) {
-
-            details.appendChild(position);
-
-        }
-
-
-        if (item.Company) {
-
-            details.appendChild(company);
-
-        }
+                    ${
+                        item.Position
+                        ? `<p>
+                            ${escapeHTML(item.Position)}
+                           </p>`
+                        : ""
+                    }
 
 
-        client.appendChild(avatar);
+                    ${
+                        item.Company
+                        ? `<p>
+                            ${escapeHTML(item.Company)}
+                           </p>`
+                        : ""
+                    }
 
-        client.appendChild(details);
+                </div>
 
+            </div>
 
-        card.appendChild(stars);
-
-        card.appendChild(review);
-
-        card.appendChild(client);
+        `;
 
 
         container.appendChild(card);
@@ -277,24 +234,22 @@ function buildTestimonials(data) {
 
 function generateStars(rating) {
 
-    let value =
-        parseInt(rating, 10);
-
-
-    if (
-        Number.isNaN(value) ||
-        value < 1 ||
-        value > 5
-    ) {
-
-        value = 5;
-
-    }
+    const value =
+        Math.min(
+            5,
+            Math.max(
+                1,
+                parseInt(rating) || 5
+            )
+        );
 
 
     return (
+
         "★".repeat(value) +
+
         "☆".repeat(5 - value)
+
     );
 
 }
@@ -309,14 +264,15 @@ function getInitials(name) {
     if (!name) return "?";
 
 
-    return String(name)
+    return name
 
         .trim()
 
         .split(/\s+/)
 
-        .map(part =>
-            part.charAt(0)
+        .map(
+            part =>
+                part.charAt(0)
         )
 
         .join("")
@@ -329,7 +285,7 @@ function getInitials(name) {
 
 
 // ======================================
-// TESTIMONIAL FORM
+// SUBMIT TESTIMONIAL
 // ======================================
 
 function setupTestimonialForm() {
@@ -340,26 +296,20 @@ function setupTestimonialForm() {
         );
 
 
-    const button =
-        document.getElementById(
-            "testimonial-submit"
-        );
-
-
-    const status =
-        document.getElementById(
-            "testimonial-status"
-        );
-
-
     if (!form) return;
 
 
     form.addEventListener(
         "submit",
-        async function (event) {
+        async function(event) {
 
             event.preventDefault();
+
+
+            const submitButton =
+                form.querySelector(
+                    "button[type='submit']"
+                );
 
 
             const rating =
@@ -368,41 +318,62 @@ function setupTestimonialForm() {
                 );
 
 
+            // ----------------------------------
+            // VALIDATE RATING
+            // ----------------------------------
+
             if (!rating) {
 
-                if (status) {
-
-                    status.textContent =
-                        "Please select a star rating.";
-
-                }
+                alert(
+                    "Please select a star rating."
+                );
 
                 return;
 
             }
 
 
+            // ----------------------------------
+            // COLLECT DATA
+            // ----------------------------------
+
             const testimonial = {
 
                 name:
-                    document.getElementById(
+                    document
+                    .getElementById(
                         "client-name"
-                    ).value.trim(),
+                    )
+                    .value
+                    .trim(),
+
 
                 company:
-                    document.getElementById(
+                    document
+                    .getElementById(
                         "client-company"
-                    ).value.trim(),
+                    )
+                    .value
+                    .trim(),
+
 
                 position:
-                    document.getElementById(
+                    document
+                    .getElementById(
                         "client-position"
-                    ).value.trim(),
+                    )
+                    .value
+                    .trim(),
+
 
                 review:
-                    document.getElementById(
+                    document
+                    .getElementById(
                         "client-review"
-                    ).value.trim(),
+                    )
+                    .value
+                    .trim(),
+
 
                 rating:
                     rating.value
@@ -410,82 +381,116 @@ function setupTestimonialForm() {
             };
 
 
+            // ----------------------------------
+            // VALIDATE REQUIRED FIELDS
+            // ----------------------------------
+
             if (
                 !testimonial.name ||
                 !testimonial.company ||
                 !testimonial.review
             ) {
 
-                if (status) {
-
-                    status.textContent =
-                        "Please complete all required fields.";
-
-                }
+                alert(
+                    "Please complete all required fields."
+                );
 
                 return;
 
             }
 
 
+            // ----------------------------------
+            // DISABLE BUTTON
+            // ----------------------------------
+
+            if (submitButton) {
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Submitting...";
+
+            }
+
+
             try {
 
-                if (button) {
 
-                    button.disabled = true;
+                const response =
+                    await fetch(
+                        POST_URL,
+                        {
 
-                    button.textContent =
-                        "Submitting...";
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded"
+
+                            },
+
+                            body:
+                                new URLSearchParams(
+                                    testimonial
+                                )
+
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Server returned an error."
+                    );
 
                 }
 
 
-                if (status) {
-
-                    status.textContent =
-                        "Submitting your testimonial...";
-
-                }
+                const result =
+                    await response.json();
 
 
-                /*
-                    Google Apps Script is being called
-                    with no-cors.
-
-                    Because no-cors responses cannot be
-                    read by JavaScript, we simply wait for
-                    fetch() to complete.
-                */
-
-                await fetch(
-                    TESTIMONIALS_POST_URL,
-                    {
-
-                        method: "POST",
-
-                        mode: "no-cors",
-
-                        body:
-                            new URLSearchParams(
-                                testimonial
-                            )
-
-                    }
+                console.log(
+                    "Submit response:",
+                    result
                 );
 
 
-                if (status) {
+                if (result.success) {
 
-                    status.textContent =
-                        "Thank you! Your testimonial has been submitted for approval.";
+
+                    alert(
+
+                        "Thank you! Your testimonial has been submitted for approval."
+
+                    );
+
+
+                    form.reset();
+
+
+                    // Reload approved testimonials
+                    loadTestimonials();
+
+
+                } else {
+
+
+                    throw new Error(
+
+                        result.message ||
+                        "Submission failed."
+
+                    );
 
                 }
 
 
-                form.reset();
-
-
             } catch (error) {
+
 
                 console.error(
                     "Submission error:",
@@ -493,20 +498,34 @@ function setupTestimonialForm() {
                 );
 
 
-                if (status) {
+                /*
+                 * IMPORTANT:
+                 *
+                 * Google Apps Script web apps can
+                 * sometimes successfully receive a POST
+                 * while the browser cannot read the response
+                 * because of cross-origin restrictions.
+                 *
+                 * We therefore show a useful message
+                 * rather than falsely claiming that the
+                 * submission definitely failed.
+                 */
 
-                    status.textContent =
-                        "Something went wrong. Please try again.";
+                alert(
 
-                }
+                    "Your testimonial may have been submitted. Please check the sheet before submitting again."
+
+                );
+
 
             } finally {
 
-                if (button) {
 
-                    button.disabled = false;
+                if (submitButton) {
 
-                    button.textContent =
+                    submitButton.disabled = false;
+
+                    submitButton.textContent =
                         "Submit Testimonial";
 
                 }
@@ -515,5 +534,49 @@ function setupTestimonialForm() {
 
         }
     );
+
+}
+
+
+// ======================================
+// ESCAPE HTML
+// ======================================
+
+function escapeHTML(value) {
+
+    if (value === null ||
+        value === undefined) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
